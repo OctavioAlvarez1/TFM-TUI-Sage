@@ -30,8 +30,8 @@ export default function ChatInput({ onSend, disabled }: Props) {
     <Box
       sx={{
         p: 2,
-        borderTop: '1.5px solid #D1FAE5',
-        background: '#F8FFF9',
+        borderTop: '1px solid #E5F5EC',
+        background: 'linear-gradient(180deg, #F8FFF9 0%, #FFFFFF 100%)',
       }}
     >
       <Box display="flex" gap={1} alignItems="flex-end">
@@ -51,28 +51,30 @@ export default function ChatInput({ onSend, disabled }: Props) {
               borderRadius: '12px',
               background: '#FFFFFF',
               color: '#111827',
-              '& fieldset': { borderColor: '#D1FAE5' },
-              '&:hover fieldset': { borderColor: '#86EFAC' },
-              '&.Mui-focused fieldset': { borderColor: '#16A34A' },
+              fontSize: '0.9rem',
+              '& fieldset': { borderColor: '#D1FAE5', borderWidth: '1.5px' },
+              '&:hover fieldset': { borderColor: '#4ADE80' },
+              '&.Mui-focused fieldset': { borderColor: '#16A34A', borderWidth: '2px' },
             },
-            '& input::placeholder, & textarea::placeholder': {
-              color: '#9CA3AF',
-              opacity: 1,
-            },
+            '& textarea::placeholder': { color: '#9CA3AF', opacity: 1 },
           }}
         />
         <IconButton
           onClick={submit}
           disabled={!value.trim() || disabled}
           sx={{
-            bgcolor: '#16A34A',
+            background: 'linear-gradient(145deg, #22C55E 0%, #15803D 100%)',
             color: '#FFFFFF',
-            borderRadius: '10px',
-            width: 40,
-            height: 40,
+            borderRadius: '12px',
+            width: 42,
+            height: 42,
             flexShrink: 0,
-            '&:hover': { bgcolor: '#15803D' },
-            '&.Mui-disabled': { bgcolor: '#D1FAE5', color: '#9CA3AF' },
+            boxShadow: '0 4px 14px rgba(22,163,74,0.4)',
+            '&:hover': {
+              background: 'linear-gradient(145deg, #16A34A 0%, #14532D 100%)',
+              boxShadow: '0 6px 18px rgba(22,163,74,0.5)',
+            },
+            '&.Mui-disabled': { background: '#E5E7EB', color: '#9CA3AF', boxShadow: 'none' },
           }}
         >
           <ArrowUpwardRoundedIcon fontSize="small" />

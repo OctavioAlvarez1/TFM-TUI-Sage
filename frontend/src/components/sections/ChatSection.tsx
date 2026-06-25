@@ -20,28 +20,27 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
       component="section"
       id="chat"
       sx={{
-        py: { xs: 6, md: 10 },
+        py: { xs: 8, md: 12 },
         px: { xs: 2, md: 4 },
         background: 'linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%)',
         position: 'relative',
         overflow: 'hidden',
-        // Decorative radial glow behind widget
         '&::before': {
           content: '""',
           position: 'absolute',
-          top: '10%',
+          top: '5%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '70%',
-          height: '60%',
-          background: 'radial-gradient(ellipse, rgba(22,163,74,0.07) 0%, transparent 70%)',
+          width: '80%',
+          height: '70%',
+          background: 'radial-gradient(ellipse, rgba(22,163,74,0.09) 0%, transparent 65%)',
           pointerEvents: 'none',
         },
       }}
     >
       <Box maxWidth={1100} mx="auto" position="relative">
         {/* Section heading */}
-        <Box textAlign="center" mb={5}>
+        <Box textAlign="center" mb={6}>
           <Typography variant="overline" sx={{ color: '#16A34A', letterSpacing: 3, fontSize: '0.72rem', fontWeight: 700 }}>
             Pregunta a Sage
           </Typography>
@@ -59,28 +58,32 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            borderRadius: '20px',
+            borderRadius: '24px',
             overflow: 'hidden',
-            border: '1.5px solid #BBF7D0',
-            boxShadow: '0 0 0 4px rgba(22,163,74,0.05), 0 20px 60px rgba(22,163,74,0.12), 0 4px 16px rgba(0,0,0,0.06)',
+            border: '1.5px solid #166534',
+            boxShadow: `
+              0 0 0 6px rgba(22,163,74,0.08),
+              0 32px 80px rgba(5,46,22,0.30),
+              0 8px 24px rgba(0,0,0,0.15)
+            `,
           }}
         >
-          {/* Chrome top bar */}
+          {/* Chrome top bar — dark forest green */}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               px: 2.5,
-              py: 1.2,
-              background: 'linear-gradient(90deg, #DCFCE7 0%, #F0FDF4 60%, #FFFFFF 100%)',
-              borderBottom: '1.5px solid #BBF7D0',
+              py: 1.3,
+              background: 'linear-gradient(90deg, #052E16 0%, #14532D 60%, #166534 100%)',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
               gap: 1.5,
             }}
           >
             {/* Traffic lights */}
-            <Box display="flex" gap={0.6}>
-              {['#86EFAC', '#FCD34D', '#FCA5A5'].map((c) => (
-                <Box key={c} sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: c }} />
+            <Box display="flex" gap={0.65}>
+              {['#4ADE80', '#FCD34D', '#FCA5A5'].map((c) => (
+                <Box key={c} sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: c, opacity: 0.8 }} />
               ))}
             </Box>
 
@@ -90,23 +93,22 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
                 sx={{
                   width: 20, height: 20,
                   borderRadius: '6px 2px 6px 2px',
-                  background: 'linear-gradient(145deg, #22C55E 0%, #15803D 100%)',
+                  background: 'linear-gradient(145deg, #4ADE80 0%, #16A34A 100%)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
                 <SpaIcon sx={{ color: '#fff', fontSize: 12 }} />
               </Box>
-              <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151', letterSpacing: 0.5 }}>
+              <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)', letterSpacing: 0.5 }}>
                 Sage · Asesor de Destinos
               </Typography>
             </Box>
 
-            {/* Right spacer to balance traffic lights */}
             <Box sx={{ width: 46 }} />
           </Box>
 
           {/* Body */}
-          <Box sx={{ display: 'flex', height: CHAT_HEIGHT, background: '#FFFFFF' }}>
+          <Box sx={{ display: 'flex', height: CHAT_HEIGHT }}>
             <StatusSidebar onExampleClick={sendMessage} />
             <Box display="flex" flexDirection="column" flex={1} overflow="hidden">
               <ChatWindow messages={messages} />
