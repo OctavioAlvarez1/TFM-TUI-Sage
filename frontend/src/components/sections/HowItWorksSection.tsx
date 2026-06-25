@@ -57,7 +57,7 @@ export default function HowItWorksSection() {
         backgroundImage: 'url(/stat-destinos.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 40%',
-        filter: 'blur(1px) saturate(0.55)',
+        filter: 'saturate(0.75) brightness(0.85)',
         transform: 'scale(1.04)',
       }} />
 
@@ -65,8 +65,8 @@ export default function HowItWorksSection() {
       <Box aria-hidden sx={{
         position: 'absolute', inset: 0, zIndex: 1,
         background: `
-          linear-gradient(180deg, #0D1F14 0%, rgba(13,31,20,0.72) 25%, rgba(13,31,20,0.72) 75%, #0D1F14 100%),
-          linear-gradient(90deg,  #0D1F14 0%, rgba(13,31,20,0.30) 20%, rgba(13,31,20,0.30) 80%, #0D1F14 100%)
+          linear-gradient(180deg, #0D1F14 0%, rgba(13,31,20,0.50) 22%, rgba(13,31,20,0.50) 78%, #0D1F14 100%),
+          linear-gradient(90deg,  rgba(13,31,20,0.70) 0%, rgba(13,31,20,0.10) 18%, rgba(13,31,20,0.10) 82%, rgba(13,31,20,0.70) 100%)
         `,
       }} />
 
@@ -80,7 +80,7 @@ export default function HowItWorksSection() {
           <Typography variant="h4" fontWeight={800} mt={0.5} sx={{ color: '#FFFFFF' }}>
             Cuatro pasos, datos reales, cero invención
           </Typography>
-          <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.55)', mt: 1.5, maxWidth: 500, mx: 'auto', lineHeight: 1.7 }}>
+          <Typography variant="body1" sx={{ color: '#FFFFFF', mt: 1.5, maxWidth: 500, mx: 'auto', lineHeight: 1.7 }}>
             Un pipeline RAG que recupera datos reales de destinos españoles,
             fundamenta cada respuesta y la transmite en tiempo real.
           </Typography>
@@ -124,14 +124,15 @@ export default function HowItWorksSection() {
                 <Box
                   sx={{
                     width: 56, height: 56, borderRadius: '50%',
-                    background: `radial-gradient(circle, ${color}28 0%, transparent 70%)`,
-                    border: `1.5px solid ${color}55`,
+                    background: `radial-gradient(circle, ${color}55 0%, ${color}18 70%)`,
+                    border: `2px solid ${color}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    mb: 3, boxShadow: `0 0 20px ${color}22`,
+                    mb: 3,
+                    boxShadow: `0 0 12px ${color}, 0 0 30px ${color}88, 0 0 60px ${color}33`,
                     position: 'relative',
                   }}
                 >
-                  <Icon sx={{ fontSize: 24, color }} />
+                  <Icon sx={{ fontSize: 24, color, filter: `drop-shadow(0 0 6px ${color})` }} />
                   <Box
                     sx={{
                       position: 'absolute', top: -6, right: -6,
@@ -151,23 +152,22 @@ export default function HowItWorksSection() {
                   sx={{
                     p: 2.5,
                     borderRadius: '16px',
-                    border: `1px solid ${color}30`,
-                    backdropFilter: 'blur(12px)',
+                    border: `1px solid ${color}40`,
                     width: '100%',
                     flex: 1,
                     overflow: 'hidden',
                     position: 'relative',
-                    boxShadow: `0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.07)`,
-                    background: 'rgba(13,31,20,0.55)',
+                    background: '#FFFFFF',
+                    boxShadow: `0 8px 32px rgba(0,0,0,0.28), inset 0 6px 28px ${color}90`,
                   }}
                 >
                   {/* Colored top line */}
-                  <Box sx={{ height: '2px', width: 32, borderRadius: '2px', bgcolor: color, mb: 1.5, position: 'relative', zIndex: 1 }} />
+                  <Box sx={{ height: '3px', width: 32, borderRadius: '2px', bgcolor: color, mb: 1.5, position: 'relative', zIndex: 1, boxShadow: `0 2px 8px ${color}88` }} />
 
-                  <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ color: '#FFFFFF', position: 'relative', zIndex: 1 }}>
+                  <Typography variant="subtitle1" fontWeight={700} mb={1} sx={{ color: '#111827', position: 'relative', zIndex: 1 }}>
                     {title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#6B7280', lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
                     {body}
                   </Typography>
                 </Box>
