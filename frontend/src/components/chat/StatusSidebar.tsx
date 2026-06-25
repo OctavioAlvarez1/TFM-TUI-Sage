@@ -2,22 +2,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import SpaIcon from '@mui/icons-material/Spa';
 import StatusChip from '../common/StatusChip';
 import { useKbStatus } from '../../hooks/useKbStatus';
 
 const EXAMPLE_QUESTIONS = [
-  'What is the most sustainable destination in Spain?',
-  'Which destinations have critical congestion in summer?',
-  'Where does Horizon apply a redistribution penalty?',
-  'What beach destinations have a sustainability bonus?',
-  'Compare Barcelona and Donostia-San Sebastián sustainability.',
+  '¿Cuál es el destino más sostenible de España?',
+  '¿Qué destinos tienen congestión crítica en verano?',
+  '¿Dónde aplica Horizon penalización por redistribución?',
+  '¿Qué destinos de playa tienen bonificación de sostenibilidad?',
+  'Compara la sostenibilidad de Barcelona y Donostia.',
 ];
 
 const HOW_IT_WORKS = [
-  'Your question is converted to a vector embedding',
-  'ChromaDB retrieves the 5 most relevant destination docs',
-  'Claude reads those docs and answers only from them',
-  'Sources and relevance scores are shown below each answer',
+  'Tu pregunta se convierte en vector embedding',
+  'ChromaDB recupera los 5 docs más relevantes',
+  'Claude responde solo desde esos documentos',
+  'Se muestran fuentes y scores de relevancia',
 ];
 
 interface Props {
@@ -34,94 +35,121 @@ export default function StatusSidebar({ onExampleClick }: Props) {
         flexShrink: 0,
         display: { xs: 'none', md: 'flex' },
         flexDirection: 'column',
-        gap: 2.5,
-        p: 2.5,
-        borderRight: '1px solid rgba(255,255,255,.07)',
+        borderRight: '1.5px solid #D1FAE5',
         overflowY: 'auto',
+        background: 'linear-gradient(180deg, #F0FDF4 0%, #FAFFFE 100%)',
       }}
     >
-      {/* Status */}
-      <Box>
-        <Typography variant="overline" sx={{ color: 'text.secondary', fontSize: '0.65rem', letterSpacing: 1.5 }}>
-          System Status
-        </Typography>
-        <Box mt={0.75}>
+      {/* Sage branding header */}
+      <Box
+        sx={{
+          px: 2.5,
+          pt: 2.5,
+          pb: 2,
+          background: 'linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%)',
+          borderBottom: '1px solid #D1FAE5',
+        }}
+      >
+        <Box display="flex" alignItems="center" gap={1.2} mb={1}>
+          <Box
+            sx={{
+              width: 32, height: 32,
+              borderRadius: '10px 3px 10px 3px',
+              background: 'linear-gradient(145deg, #22C55E 0%, #15803D 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 3px 10px rgba(22,163,74,0.35)',
+            }}
+          >
+            <SpaIcon sx={{ color: '#fff', fontSize: 17 }} />
+          </Box>
+          <Box>
+            <Typography sx={{ fontWeight: 900, fontSize: '1rem', color: '#111827', lineHeight: 1 }}>
+              <Box component="span" sx={{ color: '#16A34A' }}>S</Box>AGE
+            </Typography>
+            <Typography sx={{ fontSize: '0.58rem', color: '#6B7280', fontWeight: 600, letterSpacing: 1 }}>
+              RAG · SPAIN TOURISM
+            </Typography>
+          </Box>
+        </Box>
+        <Box mt={0.5}>
           <StatusChip status={status} loading={loading} />
         </Box>
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,.06)' }} />
-
-      {/* Example questions */}
-      <Box>
-        <Typography variant="overline" sx={{ color: 'text.secondary', fontSize: '0.65rem', letterSpacing: 1.5 }}>
-          Example Questions
-        </Typography>
-        <Box mt={1} display="flex" flexDirection="column" gap={0.75}>
-          {EXAMPLE_QUESTIONS.map((q) => (
-            <Button
-              key={q}
-              onClick={() => onExampleClick(q)}
-              variant="text"
-              size="small"
-              sx={{
-                justifyContent: 'flex-start',
-                textAlign: 'left',
-                color: 'text.secondary',
-                fontSize: '0.72rem',
-                lineHeight: 1.4,
-                py: 0.75,
-                px: 1,
-                borderRadius: '8px',
-                border: '1px solid transparent',
-                '&:hover': {
-                  color: 'primary.main',
-                  bgcolor: 'rgba(16,185,129,.06)',
-                  border: '1px solid rgba(16,185,129,.15)',
-                },
-              }}
-            >
-              {q}
-            </Button>
-          ))}
-        </Box>
-      </Box>
-
-      <Divider sx={{ borderColor: 'rgba(255,255,255,.06)' }} />
-
-      {/* How it works */}
-      <Box
-        sx={{
-          p: 2,
-          borderRadius: '12px',
-          background: 'rgba(255,255,255,.03)',
-          border: '1px solid rgba(255,255,255,.07)',
-          backdropFilter: 'blur(8px)',
-        }}
-      >
-        <Typography variant="overline" sx={{ color: 'text.secondary', fontSize: '0.65rem', letterSpacing: 1.5 }}>
-          How Sage Works
-        </Typography>
-        <Box mt={1} display="flex" flexDirection="column" gap={1}>
-          {HOW_IT_WORKS.map((step, i) => (
-            <Box key={i} display="flex" gap={1} alignItems="flex-start">
-              <Typography
-                variant="caption"
+      {/* Content area */}
+      <Box display="flex" flexDirection="column" gap={2.5} p={2.5} flex={1}>
+        {/* Example questions */}
+        <Box>
+          <Typography variant="overline" sx={{ color: '#9CA3AF', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
+            Preguntas de ejemplo
+          </Typography>
+          <Box mt={1} display="flex" flexDirection="column" gap={0.5}>
+            {EXAMPLE_QUESTIONS.map((q) => (
+              <Button
+                key={q}
+                onClick={() => onExampleClick(q)}
+                variant="text"
+                size="small"
                 sx={{
-                  color: 'primary.main',
-                  fontWeight: 700,
-                  fontSize: '0.65rem',
-                  minWidth: 16,
-                  mt: 0.1,
+                  justifyContent: 'flex-start',
+                  textAlign: 'left',
+                  color: '#374151',
+                  fontSize: '0.72rem',
+                  lineHeight: 1.4,
+                  py: 0.75,
+                  px: 1,
+                  borderRadius: '8px',
+                  border: '1px solid transparent',
+                  textTransform: 'none',
+                  '&:hover': {
+                    color: '#15803D',
+                    bgcolor: '#DCFCE7',
+                    border: '1px solid #86EFAC',
+                  },
                 }}
               >
-                {i + 1}.
-              </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', lineHeight: 1.5 }}>
-                {step}
-              </Typography>
-            </Box>
-          ))}
+                {q}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+
+        <Divider sx={{ borderColor: '#D1FAE5' }} />
+
+        {/* How it works */}
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: '12px',
+            background: '#FFFFFF',
+            border: '1px solid #D1FAE5',
+            boxShadow: '0 2px 8px rgba(22,163,74,0.06)',
+          }}
+        >
+          <Typography variant="overline" sx={{ color: '#9CA3AF', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
+            Cómo funciona
+          </Typography>
+          <Box mt={1} display="flex" flexDirection="column" gap={1.2}>
+            {HOW_IT_WORKS.map((step, i) => (
+              <Box key={i} display="flex" gap={1} alignItems="flex-start">
+                <Box
+                  sx={{
+                    width: 18, height: 18, borderRadius: '50%',
+                    bgcolor: '#DCFCE7', border: '1px solid #86EFAC',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, mt: 0.05,
+                  }}
+                >
+                  <Typography sx={{ color: '#16A34A', fontWeight: 800, fontSize: '0.58rem', lineHeight: 1 }}>
+                    {i + 1}
+                  </Typography>
+                </Box>
+                <Typography variant="caption" sx={{ color: '#6B7280', lineHeight: 1.5 }}>
+                  {step}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
     </Box>

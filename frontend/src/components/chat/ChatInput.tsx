@@ -30,9 +30,8 @@ export default function ChatInput({ onSend, disabled }: Props) {
     <Box
       sx={{
         p: 2,
-        borderTop: '1px solid rgba(255,255,255,.07)',
-        background: 'rgba(7,12,22,.9)',
-        backdropFilter: 'blur(12px)',
+        borderTop: '1.5px solid #D1FAE5',
+        background: '#F8FFF9',
       }}
     >
       <Box display="flex" gap={1} alignItems="flex-end">
@@ -40,7 +39,7 @@ export default function ChatInput({ onSend, disabled }: Props) {
           fullWidth
           multiline
           maxRows={4}
-          placeholder="Ask about destinations, sustainability, congestion..."
+          placeholder="Pregunta sobre destinos, sostenibilidad, congestión..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={onKeyDown}
@@ -50,10 +49,15 @@ export default function ChatInput({ onSend, disabled }: Props) {
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '12px',
-              background: 'rgba(255,255,255,.04)',
-              '& fieldset': { borderColor: 'rgba(255,255,255,.12)' },
-              '&:hover fieldset': { borderColor: 'rgba(16,185,129,.4)' },
-              '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+              background: '#FFFFFF',
+              color: '#111827',
+              '& fieldset': { borderColor: '#D1FAE5' },
+              '&:hover fieldset': { borderColor: '#86EFAC' },
+              '&.Mui-focused fieldset': { borderColor: '#16A34A' },
+            },
+            '& input::placeholder, & textarea::placeholder': {
+              color: '#9CA3AF',
+              opacity: 1,
             },
           }}
         />
@@ -61,25 +65,22 @@ export default function ChatInput({ onSend, disabled }: Props) {
           onClick={submit}
           disabled={!value.trim() || disabled}
           sx={{
-            bgcolor: 'primary.main',
-            color: '#070C16',
+            bgcolor: '#16A34A',
+            color: '#FFFFFF',
             borderRadius: '10px',
             width: 40,
             height: 40,
             flexShrink: 0,
-            '&:hover': { bgcolor: '#34D399' },
-            '&.Mui-disabled': { bgcolor: 'rgba(255,255,255,.08)', color: 'text.secondary' },
+            '&:hover': { bgcolor: '#15803D' },
+            '&.Mui-disabled': { bgcolor: '#D1FAE5', color: '#9CA3AF' },
           }}
         >
           <ArrowUpwardRoundedIcon fontSize="small" />
         </IconButton>
       </Box>
       <Box mt={0.75} display="flex" justifyContent="center">
-        <Box
-          component="span"
-          sx={{ fontSize: '0.65rem', color: 'text.secondary', opacity: 0.6 }}
-        >
-          Enter to send · Shift+Enter for new line · Answers grounded in TUI destination data
+        <Box component="span" sx={{ fontSize: '0.65rem', color: '#9CA3AF' }}>
+          Enter para enviar · Shift+Enter nueva línea · Respuestas basadas en datos TUI
         </Box>
       </Box>
     </Box>

@@ -1,28 +1,29 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import DescriptionIcon from '@mui/icons-material/Description';
 import type { SvgIconComponent } from '@mui/icons-material';
 
-const STATS: { value: string; label: string; sub: string; Icon: SvgIconComponent }[] = [
-  { value: '20',   label: 'Destinos',           sub: 'Playas · Ciudades · Naturaleza · Mixto', Icon: LocalFloristIcon },
-  { value: '85%',  label: 'Concentración',       sub: 'en el 10% del territorio',               Icon: BarChartIcon     },
-  { value: '240+', label: 'Datos mensuales',     sub: 'INE · 13 provincias',                    Icon: TrendingUpIcon   },
-  { value: '21',   label: 'Documentos RAG',      sub: 'Contexto + fuentes',                     Icon: DescriptionIcon  },
+const STATS: {
+  value: string; label: string; sub: string;
+  Icon: SvgIconComponent; color: string; img: string;
+}[] = [
+  { value: '20',   label: 'Destinos',        sub: 'Playas · Ciudades · Naturaleza · Mixto', Icon: LocalFloristIcon, color: '#4ADE80', img: '/stat-destinos.jpg'      },
+  { value: '85%',  label: 'Concentración',   sub: 'en el 10% del territorio',               Icon: BarChartIcon,     color: '#FB923C', img: '/stat-concentracion.jpg' },
+  { value: '240+', label: 'Datos mensuales', sub: 'INE · 13 provincias',                    Icon: TrendingUpIcon,   color: '#A3E635', img: '/stat-datos.jpg'         },
+  { value: '21',   label: 'Documentos RAG',  sub: 'Contexto + fuentes',                     Icon: DescriptionIcon,  color: '#34D399', img: '/stat-documentos.jpg'    },
 ];
 
 export default function StatsBar() {
   return (
     <Box
       sx={{
-        bgcolor: '#FFFFFF',
-        borderBottom: '1px solid #F3F4F6',
+        background: 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)',
+        borderBottom: '1px solid #F1F5F9',
         py: { xs: 4, md: 5 },
         px: { xs: 2, md: 4 },
-        boxShadow: '0 1px 0 #F3F4F6',
       }}
     >
       <Box
@@ -30,31 +31,108 @@ export default function StatsBar() {
         mx="auto"
         display="flex"
         flexWrap="wrap"
+        gap={{ xs: 2, md: 3 }}
         justifyContent="center"
-        divider={
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{ borderColor: '#F3F4F6', display: { xs: 'none', md: 'block' } }}
-          />
-        }
       >
-        {STATS.map(({ value, label, sub, Icon }) => (
-          <Box key={label} flex="1 1 180px" textAlign="center" px={3} py={{ xs: 2, md: 0 }}>
-            <Box display="flex" alignItems="center" justifyContent="center" gap={1} mb={0.5}>
-              <Icon sx={{ fontSize: 20, color: '#9CA3AF' }} />
-              <Typography
-                variant="h3"
-                fontWeight={900}
-                sx={{ fontSize: { xs: '2rem', md: '2.6rem' }, color: '#111827', lineHeight: 1 }}
-              >
-                {value}
-              </Typography>
+        {STATS.map(({ value, label, sub, Icon, color, img }) => (
+          <Box
+            key={label}
+            flex="1 1 200px"
+            sx={{
+              position: 'relative',
+              minHeight: 190,
+              px: 3,
+              py: 2.5,
+              borderRadius: '16px',
+              overflow: 'hidden',
+              transition: 'transform 0.25s, box-shadow 0.25s',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.18)',
+              cursor: 'default',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 12px 32px rgba(0,0,0,0.28)',
+              },
+              // Color accent line at bottom
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                height: '3px',
+                background: color,
+                borderRadius: '0 0 16px 16px',
+              },
+            }}
+          >
+            {/* Full photo background */}
+            <Box aria-hidden sx={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url(${img})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              zIndex: 0,
+            }} />
+
+            {/* Dark gradient overlay — top-to-bottom + left-to-right combined */}
+            <Box aria-hidden sx={{
+              position: 'absolute',
+              inset: 0,
+              background: `
+                linear-gradient(90deg,  rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.40) 55%, rgba(0,0,0,0) 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.60) 100%)
+              `,
+              zIndex: 1,
+            }} />
+
+            {/* Icon badge */}
+            <Box
+              sx={{
+                position: 'relative', zIndex: 2,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 36,
+                height: 36,
+                borderRadius: '10px',
+                bgcolor: 'rgba(255,255,255,0.18)',
+                backdropFilter: 'blur(4px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                mb: 1.5,
+              }}
+            >
+              <Icon sx={{ fontSize: 18, color }} />
             </Box>
-            <Typography variant="body2" fontWeight={700} sx={{ color: '#111827', mb: 0.25 }}>
+
+            {/* Number */}
+            <Typography
+              variant="h3"
+              fontWeight={900}
+              sx={{
+                position: 'relative', zIndex: 2,
+                fontSize: { xs: '2rem', md: '2.4rem' },
+                color,
+                lineHeight: 1,
+                mb: 0.5,
+                textShadow: '0 2px 8px rgba(0,0,0,0.4)',
+              }}
+            >
+              {value}
+            </Typography>
+
+            {/* Label */}
+            <Typography
+              variant="body2"
+              fontWeight={700}
+              sx={{ position: 'relative', zIndex: 2, color: '#FFFFFF', mb: 0.25, textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
+            >
               {label}
             </Typography>
-            <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
+
+            {/* Sub */}
+            <Typography
+              variant="caption"
+              sx={{ position: 'relative', zIndex: 2, color: 'rgba(255,255,255,0.70)' }}
+            >
               {sub}
             </Typography>
           </Box>

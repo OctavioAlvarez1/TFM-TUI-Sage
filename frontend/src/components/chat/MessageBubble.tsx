@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import SpaIcon from '@mui/icons-material/Spa';
 import PersonIcon from '@mui/icons-material/Person';
 import LoadingDots from '../common/LoadingDots';
 import SourcesPanel from './SourcesPanel';
@@ -30,17 +30,17 @@ export default function MessageBubble({ message }: Props) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            bgcolor: isUser ? 'rgba(16,185,129,.15)' : 'rgba(99,102,241,.15)',
-            border: `1px solid ${isUser ? 'rgba(16,185,129,.3)' : 'rgba(99,102,241,.3)'}`,
+            bgcolor: isUser ? '#DCFCE7' : '#F0FDF4',
+            border: `1px solid ${isUser ? '#86EFAC' : '#BBF7D0'}`,
           }}
         >
           {isUser
-            ? <PersonIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-            : <AutoAwesomeIcon sx={{ fontSize: 16, color: '#6366F1' }} />
+            ? <PersonIcon sx={{ fontSize: 15, color: '#16A34A' }} />
+            : <SpaIcon sx={{ fontSize: 15, color: '#16A34A' }} />
           }
         </Box>
-        <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-          {isUser ? 'You' : 'Sage'}
+        <Typography variant="caption" sx={{ color: '#9CA3AF', fontWeight: 500 }}>
+          {isUser ? 'Tú' : 'Sage'}
         </Typography>
       </Box>
 
@@ -51,11 +51,8 @@ export default function MessageBubble({ message }: Props) {
           px: 2,
           py: 1.5,
           borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-          background: isUser
-            ? 'rgba(16,185,129,.12)'
-            : 'rgba(255,255,255,.05)',
-          border: `1px solid ${isUser ? 'rgba(16,185,129,.22)' : 'rgba(255,255,255,.1)'}`,
-          backdropFilter: isUser ? 'none' : 'blur(16px)',
+          background: isUser ? '#DCFCE7' : '#F9FAFB',
+          border: `1px solid ${isUser ? '#86EFAC' : '#E5E7EB'}`,
         }}
       >
         {message.isStreaming && message.content === '' ? (
@@ -64,13 +61,13 @@ export default function MessageBubble({ message }: Props) {
           <Typography
             variant="body2"
             sx={{
-              color: 'text.primary',
+              color: '#111827',
               lineHeight: 1.7,
               whiteSpace: 'pre-wrap',
               '&::after': message.isStreaming
                 ? {
                     content: '"│"',
-                    color: 'primary.main',
+                    color: '#16A34A',
                     animation: 'blink 1s step-end infinite',
                     ml: 0.2,
                   }
@@ -82,7 +79,7 @@ export default function MessageBubble({ message }: Props) {
         )}
       </Box>
 
-      {/* Sources accordion — shown after streaming finishes */}
+      {/* Sources accordion */}
       {!isUser && !message.isStreaming && (
         <Box sx={{ maxWidth: '78%', width: '100%' }}>
           <SourcesPanel sources={message.sources} />
