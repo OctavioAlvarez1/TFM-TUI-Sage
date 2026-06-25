@@ -22,23 +22,36 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
       sx={{
         py: { xs: 8, md: 12 },
         px: { xs: 2, md: 4 },
-        background: 'linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%)',
         position: 'relative',
         overflow: 'hidden',
+        // Sevilla Plaza de España como fondo con efecto desvaneciente
+        backgroundImage: 'url(/stat-datos.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        // Fade lineal en bordes superior e inferior
         '&::before': {
           content: '""',
           position: 'absolute',
-          top: '5%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '80%',
-          height: '70%',
-          background: 'radial-gradient(ellipse, rgba(22,163,74,0.09) 0%, transparent 65%)',
+          inset: 0,
+          background: `
+            linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0) 80%, rgba(240,253,244,0.70) 100%),
+            linear-gradient(90deg,  rgba(255,255,255,0.60) 0%, rgba(255,255,255,0) 16%, rgba(255,255,255,0) 84%, rgba(255,255,255,0.60) 100%)
+          `,
           pointerEvents: 'none',
+          zIndex: 0,
+        },
+        // Vignette radial — desvanece la foto hacia los bordes dejando el centro visible
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse 60% 65% at 50% 58%, transparent 0%, rgba(255,255,255,0.95) 100%)',
+          pointerEvents: 'none',
+          zIndex: 0,
         },
       }}
     >
-      <Box maxWidth={1100} mx="auto" position="relative">
+      <Box maxWidth={1100} mx="auto" position="relative" zIndex={1}>
         {/* Section heading */}
         <Box textAlign="center" mb={6}>
           <Typography variant="overline" sx={{ color: '#16A34A', letterSpacing: 3, fontSize: '0.72rem', fontWeight: 700 }}>
@@ -60,11 +73,14 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
             flexDirection: 'column',
             borderRadius: '24px',
             overflow: 'hidden',
-            border: '1.5px solid #166534',
+            border: '2px solid #2D6A4F',
+            background: '#FFFFFF',
             boxShadow: `
-              0 0 0 6px rgba(22,163,74,0.08),
-              0 32px 80px rgba(5,46,22,0.30),
-              0 8px 24px rgba(0,0,0,0.15)
+              0 0 0 8px rgba(255,255,255,1),
+              0 0 0 10px #2D6A4F,
+              0 0 0 14px rgba(255,255,255,0.60),
+              0 40px 100px rgba(0,0,0,0.50),
+              0 10px 30px rgba(0,0,0,0.30)
             `,
           }}
         >
@@ -75,7 +91,7 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
               alignItems: 'center',
               px: 2.5,
               py: 1.3,
-              background: 'linear-gradient(90deg, #052E16 0%, #14532D 60%, #166534 100%)',
+              background: 'linear-gradient(90deg, #1B4332 0%, #2D6A4F 60%, #40916C 100%)',
               borderBottom: '1px solid rgba(255,255,255,0.08)',
               gap: 1.5,
             }}

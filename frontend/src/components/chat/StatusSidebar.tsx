@@ -35,19 +35,17 @@ export default function StatusSidebar({ onExampleClick }: Props) {
         flexShrink: 0,
         display: { xs: 'none', md: 'flex' },
         flexDirection: 'column',
-        borderRight: '1px solid rgba(255,255,255,0.07)',
+        borderRight: '1px solid rgba(255,255,255,0.15)',
         overflowY: 'auto',
         position: 'relative',
-        background: 'linear-gradient(160deg, #052E16 0%, #0D2818 40%, #14532D 75%, #166534 100%)',
-        backgroundAttachment: 'local',
-        // Radial green glow at top-left corner
+        background: 'linear-gradient(160deg, #1B4332 0%, #2D6A4F 45%, #40916C 100%)',
         '&::before': {
           content: '""',
           position: 'absolute',
           top: 0, left: 0,
           width: '100%',
           height: '45%',
-          background: 'radial-gradient(ellipse at 30% 0%, rgba(74,222,128,0.18) 0%, transparent 65%)',
+          background: 'radial-gradient(ellipse at 30% 0%, rgba(134,239,172,0.18) 0%, transparent 65%)',
           pointerEvents: 'none',
           zIndex: 0,
         },
@@ -59,7 +57,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
           px: 2.5,
           pt: 2.5,
           pb: 2,
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          borderBottom: '1px solid rgba(255,255,255,0.15)',
           position: 'relative',
           zIndex: 1,
         }}
@@ -80,7 +78,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
             <Typography sx={{ fontWeight: 900, fontSize: '1.05rem', color: '#FFFFFF', lineHeight: 1 }}>
               <Box component="span" sx={{ color: '#4ADE80' }}>S</Box>AGE
             </Typography>
-            <Typography sx={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.4)', fontWeight: 600, letterSpacing: 1 }}>
+            <Typography sx={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.80)', fontWeight: 600, letterSpacing: 1 }}>
               RAG · SPAIN TOURISM
             </Typography>
           </Box>
@@ -92,7 +90,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
       <Box display="flex" flexDirection="column" gap={2.5} p={2.5} flex={1} sx={{ position: 'relative', zIndex: 1 }}>
         {/* Example questions */}
         <Box>
-          <Typography variant="overline" sx={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
+          <Typography variant="overline" sx={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
             Preguntas de ejemplo
           </Typography>
           <Box mt={1} display="flex" flexDirection="column" gap={0.5}>
@@ -105,7 +103,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
                 sx={{
                   justifyContent: 'flex-start',
                   textAlign: 'left',
-                  color: 'rgba(255,255,255,0.60)',
+                  color: 'rgba(255,255,255,0.90)',
                   fontSize: '0.72rem',
                   lineHeight: 1.4,
                   py: 0.75,
@@ -126,20 +124,26 @@ export default function StatusSidebar({ onExampleClick }: Props) {
           </Box>
         </Box>
 
-        <Divider sx={{ borderColor: 'rgba(255,255,255,0.07)' }} />
-
-        {/* How it works */}
+        {/* How it works — visually distinct block */}
         <Box
           sx={{
             p: 2,
             borderRadius: '12px',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: 'linear-gradient(135deg, rgba(74,222,128,0.14) 0%, rgba(34,197,94,0.08) 100%)',
+            border: '1px solid rgba(74,222,128,0.35)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10)',
+            mt: 'auto',
           }}
         >
-          <Typography variant="overline" sx={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
-            Cómo funciona
-          </Typography>
+          {/* Top label strip */}
+          <Box display="flex" alignItems="center" gap={1} mb={1.5}
+            sx={{ pb: 1.2, borderBottom: '1px solid rgba(74,222,128,0.25)' }}
+          >
+            <Box sx={{ width: 3, height: 14, borderRadius: '2px', bgcolor: '#4ADE80', flexShrink: 0 }} />
+            <Typography variant="overline" sx={{ color: '#4ADE80', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
+              Cómo funciona
+            </Typography>
+          </Box>
           <Box mt={1.2} display="flex" flexDirection="column" gap={1.2}>
             {HOW_IT_WORKS.map((step, i) => (
               <Box key={i} display="flex" gap={1} alignItems="flex-start">
@@ -156,7 +160,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
                     {i + 1}
                   </Typography>
                 </Box>
-                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>
+                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.85)', lineHeight: 1.5 }}>
                   {step}
                 </Typography>
               </Box>
