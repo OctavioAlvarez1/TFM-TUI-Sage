@@ -4,9 +4,8 @@
   padding: 0;
 }
 
-html,
-body {
-  background: #070C16;
+html, body {
+  background: #FFFBF5;
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,23 +15,14 @@ body {
   min-height: 100vh;
 }
 
-/* Blinking cursor for streaming messages */
+/* Blinking cursor for streaming assistant messages */
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50%       { opacity: 0; }
 }
 
-/* Thin scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.3);
-}
+/* Thin scrollbar — warm tones */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(194,65,12,.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(194,65,12,.4); }

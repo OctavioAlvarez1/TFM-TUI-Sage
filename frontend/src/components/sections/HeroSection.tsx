@@ -1,163 +1,220 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// 20 real destinations from the dataset, with type-based colours
-const DESTINATIONS = [
-  { name: 'Barcelona', color: '#818CF8' },
-  { name: 'Donostia-San Sebastián', color: '#818CF8' },
-  { name: 'Costa Brava', color: '#38BDF8' },
-  { name: 'Mallorca', color: '#38BDF8' },
-  { name: 'Madrid', color: '#818CF8' },
-  { name: 'Rías Baixas', color: '#38BDF8' },
-  { name: 'Granada', color: '#818CF8' },
-  { name: 'Tenerife', color: '#38BDF8' },
-  { name: 'Picos de Europa', color: '#34D399' },
-  { name: 'Ibiza', color: '#38BDF8' },
-  { name: 'Sevilla', color: '#818CF8' },
-  { name: 'Sierra Nevada', color: '#34D399' },
+const EXAMPLES = [
+  'Destinos saturados en agosto',
+  'Bonificaciones de sostenibilidad Horizon',
+  'Comparar Barcelona y Donostia',
 ];
 
-export default function HeroSection() {
+export default function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
+  const [query, setQuery] = useState('');
+
+  const handleSubmit = () => {
+    if (!query.trim()) return;
+    onSearch(query.trim());
+    setQuery('');
+  };
+
   return (
     <Box
       component="section"
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        pt: { xs: 12, md: 16 },
-        pb: { xs: 12, md: 18 },
-        background: 'linear-gradient(160deg, #050A14 0%, #0D1B2A 100%)',
-        textAlign: 'center',
+        minHeight: { xs: 520, md: 620 },
+        display: 'flex',
+        alignItems: 'center',
       }}
     >
-      {/* Warm Mediterranean glow — golden left, sea-blue right */}
-      <Box aria-hidden sx={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: [
-          'radial-gradient(ellipse at 25% 70%, rgba(251,191,36,.07), transparent 50%)',
-          'radial-gradient(ellipse at 75% 30%, rgba(14,165,233,.06), transparent 50%)',
-          'radial-gradient(circle at 50% 50%, rgba(16,185,129,.04), transparent 60%)',
-        ].join(','),
-      }} />
-
-      <Box sx={{ position: 'relative', zIndex: 1, px: { xs: 2, md: 4 } }}>
-
-        {/* Badge */}
-        <Chip
-          label="TUI Care Foundation · Future Shapers Spain · UCM TFM 2026"
-          size="small"
-          sx={{
-            mb: 4,
-            bgcolor: 'rgba(251,191,36,.1)',
-            color: '#FBbf24',
-            border: '1px solid rgba(251,191,36,.25)',
-            fontWeight: 500,
-            fontSize: '0.7rem',
-            letterSpacing: 0.3,
-          }}
-        />
-
-        {/* Main title */}
-        <Box display="flex" alignItems="center" justifyContent="center" gap={2} mb={2}>
-          <AutoAwesomeIcon sx={{ fontSize: { xs: 28, md: 36 }, color: '#FBbf24' }} />
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: { xs: '3rem', md: '5rem' },
-              fontWeight: 800,
-              letterSpacing: { xs: 8, md: 14 },
-              color: 'text.primary',
-              lineHeight: 1,
-            }}
-          >
-            SAGE
-          </Typography>
-        </Box>
-
-        <Typography
-          variant="h5"
-          sx={{ color: '#94A3B8', fontWeight: 400, mb: 3, fontSize: { xs: '1rem', md: '1.2rem' } }}
-        >
-          Spain Tourism Intelligence Platform
-        </Typography>
-
-        {/* Hero stat — the core problem */}
-        <Box
-          sx={{
-            display: 'inline-block',
-            px: { xs: 3, md: 5 },
-            py: { xs: 2, md: 3 },
-            mb: 4,
-            borderRadius: '16px',
-            background: 'rgba(255,255,255,.03)',
-            border: '1px solid rgba(255,255,255,.09)',
-            backdropFilter: 'blur(12px)',
-            maxWidth: 560,
-          }}
-        >
-          <Typography
-            variant="h3"
-            fontWeight={800}
-            sx={{
-              fontSize: { xs: '2rem', md: '2.8rem' },
-              background: 'linear-gradient(90deg, #FBbf24, #EA580C)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              mb: 0.5,
-            }}
-          >
-            85% of tourists
-          </Typography>
-          <Typography variant="body1" sx={{ color: '#94A3B8', lineHeight: 1.6 }}>
-            concentrate in just&nbsp;
-            <Box component="span" sx={{ color: 'text.primary', fontWeight: 600 }}>
-              10% of Spain's destinations
-            </Box>
-            . Ask Sage what the data says — and where the real opportunities are.
-          </Typography>
-        </Box>
-
-        {/* Destination chips */}
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={1} mb={2}>
-          {DESTINATIONS.map(({ name, color }) => (
-            <Chip
-              key={name}
-              label={name}
-              size="small"
-              sx={{
-                bgcolor: `${color}12`,
-                color: color,
-                border: `1px solid ${color}30`,
-                fontWeight: 500,
-                fontSize: '0.72rem',
-              }}
-            />
-          ))}
-          <Chip
-            label="+ 8 more"
-            size="small"
-            sx={{ bgcolor: 'rgba(255,255,255,.04)', color: '#64748B', border: '1px solid rgba(255,255,255,.07)', fontSize: '0.72rem' }}
-          />
-        </Box>
-
-        <Typography variant="caption" sx={{ color: '#475569', display: 'block', mt: 1 }}>
-          🏖 Beach &nbsp;·&nbsp; 🏛 City &nbsp;·&nbsp; 🌿 Nature &nbsp;·&nbsp; Data: INE EOH · FRONTUR · AEMET
-        </Typography>
-      </Box>
-
-      {/* SVG wave divider */}
+      {/* Background image with directional overlay */}
       <Box
-        component="svg"
-        viewBox="0 0 1440 80"
-        preserveAspectRatio="none"
         sx={{
-          position: 'absolute', bottom: 0, left: 0,
-          width: '100%', height: { xs: 40, md: 80 }, display: 'block',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'url(/spain-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 40%',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(90deg, rgba(255,255,255,1.0) 0%, rgba(255,255,255,1.0) 28%, rgba(255,255,255,0.72) 46%, rgba(255,255,255,0) 70%)',
+          },
+        }}
+      />
+
+      {/* Decorative leaf accent (left edge) */}
+      <Box
+        sx={{
+          position: 'absolute',
+          left: -20,
+          bottom: 0,
+          width: 180,
+          height: 320,
+          background: 'radial-gradient(ellipse at 0% 100%, rgba(22,163,74,0.18) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Content — left-aligned */}
+      <Box
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: 1100,
+          mx: 'auto',
+          px: { xs: 3, md: 6 },
+          py: { xs: 8, md: 10 },
+          width: '100%',
         }}
       >
-        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#070C16" />
+        <Box sx={{ maxWidth: { xs: '100%', md: '54%' } }}>
+          {/* Badge */}
+          <Chip
+            label="PLATAFORMA DE INTELIGENCIA TURÍSTICA"
+            size="small"
+            sx={{
+              mb: 3,
+              bgcolor: '#16A34A',
+              color: '#FFFFFF',
+              fontWeight: 700,
+              fontSize: '0.64rem',
+              letterSpacing: 1,
+            }}
+          />
+
+          {/* Heading line 1 */}
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: '2.5rem', md: '3.6rem' },
+              fontWeight: 800,
+              lineHeight: 1.15,
+              color: '#0F172A',
+              mb: 0.25,
+              textShadow: '0 1px 2px rgba(255,255,255,0.6)',
+            }}
+          >
+            Turismo inteligente,
+          </Typography>
+
+          {/* Heading line 2 — "sostenible" in cursive */}
+          <Typography
+            component="div"
+            sx={{
+              fontSize: { xs: '2.5rem', md: '3.6rem' },
+              fontWeight: 800,
+              lineHeight: 1.2,
+              color: '#0F172A',
+              mb: 2.5,
+              textShadow: '0 1px 2px rgba(255,255,255,0.6)',
+            }}
+          >
+            futuro{' '}
+            <Box
+              component="span"
+              sx={{
+                fontFamily: '"Dancing Script", cursive',
+                fontWeight: 700,
+                fontSize: { xs: '2.9rem', md: '4.2rem' },
+                color: '#16A34A',
+                textShadow: 'none',
+              }}
+            >
+              sostenible.
+            </Box>
+          </Typography>
+
+          {/* Subtitle */}
+          <Typography
+            variant="body1"
+            sx={{
+              color: '#1E293B',
+              mb: 4,
+              lineHeight: 1.7,
+              maxWidth: 440,
+              fontSize: { xs: '0.95rem', md: '1rem' },
+              fontWeight: 500,
+            }}
+          >
+            Transformamos datos en decisiones que mejoran los destinos y la experiencia.
+          </Typography>
+
+          {/* Search bar */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              bgcolor: '#FFFFFF',
+              borderRadius: '50px',
+              border: '2px solid #16A34A',
+              boxShadow: '0 4px 20px rgba(22,163,74,0.18), 0 2px 8px rgba(0,0,0,0.08)',
+              px: 2.5,
+              py: 0.5,
+              mb: 2,
+              maxWidth: 600,
+            }}
+          >
+            <InputBase
+              fullWidth
+              placeholder="Pregunta a Sage sobre cualquier destino..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+              sx={{
+                fontSize: '0.93rem',
+                color: '#374151',
+                '& input::placeholder': { color: '#6B7280', opacity: 1 },
+              }}
+            />
+            <IconButton
+              onClick={handleSubmit}
+              sx={{
+                bgcolor: '#16A34A',
+                color: '#FFFFFF',
+                width: 36,
+                height: 36,
+                ml: 1,
+                flexShrink: 0,
+                boxShadow: '0 2px 8px rgba(22,163,74,0.5)',
+                '&:hover': { bgcolor: '#15803D' },
+              }}
+            >
+              <ArrowForwardIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Box>
+
+          {/* Example chips */}
+          <Box display="flex" flexWrap="wrap" alignItems="center" gap={1}>
+            <Typography variant="caption" sx={{ color: '#374151', fontWeight: 700 }}>
+              Ejemplos:
+            </Typography>
+            {EXAMPLES.map((ex) => (
+              <Chip
+                key={ex}
+                label={ex}
+                size="small"
+                onClick={() => onSearch(ex)}
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.95)',
+                  color: '#1E293B',
+                  border: '1px solid #BBF7D0',
+                  fontSize: '0.72rem',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                  '&:hover': { bgcolor: '#F0FDF4', borderColor: '#4ADE80' },
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
