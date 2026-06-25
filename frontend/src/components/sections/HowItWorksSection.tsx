@@ -27,7 +27,7 @@ const STEPS: {
     Icon: AutoAwesomeIcon,
     step: '03',
     title: 'Claude Lee los Datos',
-    body: 'Claude Haiku recibe esos documentos y responde únicamente desde ellos. Sin invención — solo INE, FRONTUR y Horizon.',
+    body: 'El modelo recibe esos documentos y responde únicamente desde ellos. Sin invención — solo INE, FRONTUR y Horizon.',
     color: '#6EE7B7',
   },
   {

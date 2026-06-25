@@ -24,11 +24,11 @@ MONTH_NAMES = ["January","February","March","April","May","June",
 
 
 def get_api_key() -> str:
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
+    key = os.environ.get("OPENAI_API_KEY", "")
     if not key:
         raise ValueError(
-            "ANTHROPIC_API_KEY environment variable is not set. "
-            "Set it in your shell: export ANTHROPIC_API_KEY=sk-ant-..."
+            "OPENAI_API_KEY environment variable is not set. "
+            "Set it in your shell: $env:OPENAI_API_KEY='sk-...'"
         )
     return key
 

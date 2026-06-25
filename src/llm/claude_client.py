@@ -1,6 +1,6 @@
-"""Anthropic Claude API wrapper for Sage's RAG responses."""
+"""LLM wrapper for Sage's RAG responses."""
 from collections.abc import Iterator
-import anthropic
+from openai import OpenAI
 from src.config.settings import get_api_key
 
 SYSTEM_PROMPT = """You are Sage, an AI tourism advisor for the TUI Care Foundation Future Shapers Spain programme.
@@ -28,23 +28,31 @@ def _build_user_message(question: str, context_docs: list[dict]) -> str:
 
 
 def ask(question: str, context_docs: list[dict]) -> str:
-    client = anthropic.Anthropic(api_key=get_api_key())
-    message = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+    client = OpenAI(api_key=get_api_key())
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
         max_tokens=1024,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": _build_user_message(question, context_docs)}],
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": _build_user_message(question, context_docs)},
+        ],
     )
-    return message.content[0].text
+    return response.choices[0].message.content
 
 
 def stream_ask(question: str, context_docs: list[dict]) -> Iterator[str]:
-    """Yields text delta strings as Claude generates them."""
-    client = anthropic.Anthropic(api_key=get_api_key())
-    with client.messages.stream(
-        model="claude-haiku-4-5-20251001",
+    """Yields text delta strings as the model generates them."""
+    client = OpenAI(api_key=get_api_key())
+    with client.chat.completions.create(
+        model="gpt-4o-mini",
         max_tokens=1024,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": _build_user_message(question, context_docs)}],
+        stream=True,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": _build_user_message(question, context_docs)},
+        ],
     ) as stream:
-        yield from stream.text_stream
+        for chunk in stream:
+            delta = chunk.choices[0].delta.content
+            if delta:
+                yield delta

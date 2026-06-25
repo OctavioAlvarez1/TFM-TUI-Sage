@@ -11,7 +11,7 @@ const SUITE = [
   { name: 'Sage',       reto: 5, role: 'Asesor IA RAG',          color: '#22C55E', active: true },
 ];
 
-const STACK = ['Claude Haiku', 'ChromaDB', 'sentence-transformers', 'FastAPI', 'React 19', 'MUI v6'];
+const STACK = ['GPT-4o mini', 'ChromaDB', 'sentence-transformers', 'FastAPI', 'React 19', 'MUI v6'];
 
 export default function Footer() {
   return (
