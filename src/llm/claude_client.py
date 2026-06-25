@@ -1,4 +1,5 @@
 """Anthropic Claude API wrapper for Sage's RAG responses."""
+from collections.abc import Iterator
 import anthropic
 from src.config.settings import get_api_key
 
@@ -15,27 +16,35 @@ IMPORTANT RULES:
 6. When relevant, mention the Horizon recommendation engine's business rules (sustainability >85 = +5%, congestion >80 = -10% penalty, etc.)."""
 
 
-def ask(question: str, context_docs: list[dict]) -> str:
-    api_key = get_api_key()
-    client = anthropic.Anthropic(api_key=api_key)
-
-    context_text = "\n\n---\n\n".join(
+def _build_context(context_docs: list[dict]) -> str:
+    return "\n\n---\n\n".join(
         f"[Document {i+1}: {doc['metadata'].get('destination_name', 'Unknown')}]\n{doc['text']}"
         for i, doc in enumerate(context_docs)
     )
 
-    user_message = f"""Context documents:
 
-{context_text}
+def _build_user_message(question: str, context_docs: list[dict]) -> str:
+    return f"Context documents:\n\n{_build_context(context_docs)}\n\n---\n\nQuestion: {question}"
 
----
 
-Question: {question}"""
-
+def ask(question: str, context_docs: list[dict]) -> str:
+    client = anthropic.Anthropic(api_key=get_api_key())
     message = client.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=1024,
         system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_message}],
+        messages=[{"role": "user", "content": _build_user_message(question, context_docs)}],
     )
     return message.content[0].text
+
+
+def stream_ask(question: str, context_docs: list[dict]) -> Iterator[str]:
+    """Yields text delta strings as Claude generates them."""
+    client = anthropic.Anthropic(api_key=get_api_key())
+    with client.messages.stream(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1024,
+        system=SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": _build_user_message(question, context_docs)}],
+    ) as stream:
+        yield from stream.text_stream
