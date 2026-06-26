@@ -10,7 +10,7 @@ A suite of 5 AI and data projects for the TUI Care Foundation Future Shapers Spa
 | TUI-Atlas | 3 | **Atlas** | Geospatial congestion & sustainability dashboard | Streamlit + Folium + Plotly | 8501 |
 | TUI-Sentinel | 1 | **Sentinel** | Sentiment & reputation monitoring | Streamlit + Plotly | 8502 |
 | TUI-Pathfinder | 4 | **Pathfinder** | Sustainable mobility & accessibility | Streamlit + Folium + Plotly | 8503 |
-| TUI-Sage | 5 | **Sage** | RAG-powered destination AI advisor | FastAPI + React 19 + Claude API + ChromaDB | 8504 / 5174 |
+| TUI-Sage | 5 | **Sage** | RAG-powered destination AI advisor | FastAPI + React 19 + MUI v6 + OpenAI API + ChromaDB + BM25 | 8504 / 5174 |
 
 ## How They Connect
 
@@ -152,7 +152,7 @@ cd TUI-Sentinel && streamlit run app.py --server.port 8502
 # Terminal 5 — Pathfinder (mobility dashboard)
 cd TUI-Pathfinder && streamlit run app.py --server.port 8503
 
-# Terminal 6 — Sage backend (RAG AI advisor, requires ANTHROPIC_API_KEY)
+# Terminal 6 — Sage backend (RAG AI advisor, requires OPENAI_API_KEY)
 cd TUI-Sage && python -m uvicorn src.api.app:app --reload --port 8504
 
 # Terminal 7 — Sage frontend
@@ -173,7 +173,7 @@ Covers: MUI v9 dark mode rules, glassmorphism cards, SVG area charts, interactiv
 
 | Variable | Project | Purpose |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | TUI-Sage | Claude API for RAG responses |
+| `OPENAI_API_KEY` | TUI-Sage | OpenAI-compatible API for RAG responses |
 | `AEMET_API_KEY` | Horizon, Atlas | AEMET climate data (optional) |
 
 Never hardcode these values. Set as environment variables only — never commit to git.

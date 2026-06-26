@@ -144,15 +144,20 @@ export default function Header() {
               px: 1,
               py: 0.4,
               mr: 0.5,
-              fontSize: '1.2rem',
-              lineHeight: 1,
               borderRadius: '8px',
               border: `1px solid ${isDark ? '#30363D' : '#E5E7EB'}`,
               textTransform: 'none',
               '&:hover': { borderColor: '#16A34A', bgcolor: isDark ? 'rgba(22,163,74,0.10)' : '#F0FDF4' },
             }}
           >
-            {lang === 'es' ? '🇺🇸' : '🇪🇸'}
+            <Box
+              component="img"
+              src={lang === 'es'
+                ? 'https://flagcdn.com/w40/us.png'
+                : 'https://flagcdn.com/w40/es.png'}
+              alt={lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+              sx={{ width: 22, height: 'auto', display: 'block', borderRadius: '2px' }}
+            />
           </Button>
         </Tooltip>
 
