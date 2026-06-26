@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import { useTheme } from '@mui/material/styles';
+import { useApp } from '../../context/AppContext';
+import { translations } from '../../i18n/translations';
 
 interface Props {
   onSend: (question: string) => void;
@@ -11,6 +14,10 @@ interface Props {
 
 export default function ChatInput({ onSend, disabled }: Props) {
   const [value, setValue] = useState('');
+  const { lang } = useApp();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const T = translations[lang];
 
   const submit = () => {
     const q = value.trim();
@@ -30,8 +37,8 @@ export default function ChatInput({ onSend, disabled }: Props) {
     <Box
       sx={{
         p: 2,
-        borderTop: '1px solid #E5F5EC',
-        background: 'linear-gradient(180deg, #F8FFF9 0%, #FFFFFF 100%)',
+        borderTop: `1px solid ${theme.palette.divider}`,
+        bgcolor: 'background.paper',
       }}
     >
       <Box display="flex" gap={1} alignItems="flex-end">
@@ -39,7 +46,7 @@ export default function ChatInput({ onSend, disabled }: Props) {
           fullWidth
           multiline
           maxRows={4}
-          placeholder="Pregunta sobre destinos, sostenibilidad, congestión..."
+          placeholder={T.ci_placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={onKeyDown}
@@ -49,14 +56,17 @@ export default function ChatInput({ onSend, disabled }: Props) {
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '12px',
-              background: '#FFFFFF',
-              color: '#111827',
+              background: theme.palette.background.paper,
+              color: theme.palette.text.primary,
               fontSize: '0.9rem',
-              '& fieldset': { borderColor: '#D1FAE5', borderWidth: '1.5px' },
+              '& fieldset': {
+                borderColor: isDark ? '#2D6A4F' : '#D1FAE5',
+                borderWidth: '1.5px',
+              },
               '&:hover fieldset': { borderColor: '#4ADE80' },
               '&.Mui-focused fieldset': { borderColor: '#16A34A', borderWidth: '2px' },
             },
-            '& textarea::placeholder': { color: '#9CA3AF', opacity: 1 },
+            '& textarea::placeholder': { color: theme.palette.text.secondary, opacity: 1 },
           }}
         />
         <IconButton
@@ -74,15 +84,15 @@ export default function ChatInput({ onSend, disabled }: Props) {
               background: 'linear-gradient(145deg, #16A34A 0%, #14532D 100%)',
               boxShadow: '0 6px 18px rgba(22,163,74,0.5)',
             },
-            '&.Mui-disabled': { background: '#E5E7EB', color: '#9CA3AF', boxShadow: 'none' },
+            '&.Mui-disabled': { background: isDark ? '#21262D' : '#E5E7EB', color: '#9CA3AF', boxShadow: 'none' },
           }}
         >
           <ArrowUpwardRoundedIcon fontSize="small" />
         </IconButton>
       </Box>
       <Box mt={0.75} display="flex" justifyContent="center">
-        <Box component="span" sx={{ fontSize: '0.65rem', color: '#9CA3AF' }}>
-          Enter para enviar · Shift+Enter nueva línea · Respuestas basadas en datos TUI
+        <Box component="span" sx={{ fontSize: '0.65rem', color: theme.palette.text.secondary }}>
+          {T.ci_hint}
         </Box>
       </Box>
     </Box>

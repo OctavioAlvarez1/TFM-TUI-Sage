@@ -11,16 +11,17 @@ CHROMA_DIR = BASE_DIR / "data" / "chroma"
 CHROMA_DIR.mkdir(parents=True, exist_ok=True)
 
 COLLECTION_NAME = "tui_destinations"
+RELEVANCE_THRESHOLD = 0.6  # max cosine distance; docs above this are filtered out
 
 SUSTAINABILITY_TIERS = {
-    (85, 101): "Excellent",
-    (70, 85): "Good",
-    (55, 70): "Moderate",
-    (0, 55): "Poor",
+    (85, 101): "Excelente",
+    (70, 85): "Bueno",
+    (55, 70): "Moderado",
+    (0, 55): "Deficiente",
 }
 
-MONTH_NAMES = ["January","February","March","April","May","June",
-               "July","August","September","October","November","December"]
+MONTH_NAMES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio",
+               "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
 
 
 def get_api_key() -> str:

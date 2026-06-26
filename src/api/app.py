@@ -9,11 +9,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
 from src.rag.knowledge_base import build_knowledge_base, query, is_built
-from src.llm.claude_client import ask, stream_ask
-from src.config.settings import get_api_key, COLLECTION_NAME, CHROMA_DIR
+from src.llm.claude_client import ask, stream_ask, rewrite_query
+from src.config.settings import get_api_key, COLLECTION_NAME, CHROMA_DIR, BASE_DIR
 from src.api.models import (
     AskRequest, AskResponse, SourceDocument,
-    StatusResponse, RebuildResponse,
+    StatusResponse, RebuildResponse, FeedbackRequest,
 )
 
 _executor = ThreadPoolExecutor(max_workers=2)
@@ -42,10 +42,12 @@ app.add_middleware(
 )
 
 
-def _doc_to_source(doc: dict) -> SourceDocument:
+def _doc_to_source(doc: dict, lang: str = 'es') -> SourceDocument:
+    text_es = doc["text"][:300]
+    text_en = str(doc["metadata"].get("text_en", ""))[:300] or text_es
     return SourceDocument(
         destination_name=doc["metadata"].get("destination_name", "Unknown"),
-        text=doc["text"][:300],
+        text=text_en if lang == 'en' else text_es,
         relevance=round(1 - doc.get("distance", 0), 2),
     )
 
@@ -94,15 +96,19 @@ async def ask_endpoint(request: AskRequest):
     if not is_built():
         raise HTTPException(status_code=503, detail="Knowledge base not ready")
     loop = asyncio.get_event_loop()
+    history = [m.model_dump() for m in request.history]
+    retrieval_query = await loop.run_in_executor(
+        _executor, lambda: rewrite_query(request.question, history)
+    )
     retrieved = await loop.run_in_executor(
-        _executor, lambda: query(request.question, request.n_results)
+        _executor, lambda: query(retrieval_query, request.n_results)
     )
     answer = await loop.run_in_executor(
-        _executor, lambda: ask(request.question, retrieved)
+        _executor, lambda: ask(request.question, retrieved, history, request.lang)
     )
     return AskResponse(
         answer=answer,
-        sources=[_doc_to_source(d) for d in retrieved],
+        sources=[_doc_to_source(d, request.lang) for d in retrieved],
         question=request.question,
     )
 
@@ -112,17 +118,22 @@ async def ask_stream(request: AskRequest):
     if not is_built():
         raise HTTPException(status_code=503, detail="Knowledge base not ready")
 
+    history = [m.model_dump() for m in request.history]
+
     async def event_generator():
         loop = asyncio.get_event_loop()
 
-        # Retrieve relevant documents
+        # Rewrite follow-up questions to standalone queries for retrieval
+        retrieval_query = await loop.run_in_executor(
+            _executor, lambda: rewrite_query(request.question, history)
+        )
         retrieved = await loop.run_in_executor(
-            _executor, lambda: query(request.question, request.n_results)
+            _executor, lambda: query(retrieval_query, request.n_results)
         )
 
         # Emit source events first
         for doc in retrieved:
-            source = _doc_to_source(doc)
+            source = _doc_to_source(doc, request.lang)
             yield {
                 "data": json.dumps({
                     "type": "source",
@@ -137,7 +148,7 @@ async def ask_stream(request: AskRequest):
 
         def run_stream():
             try:
-                for token in stream_ask(request.question, retrieved):
+                for token in stream_ask(request.question, retrieved, history, request.lang):
                     asyncio.run_coroutine_threadsafe(queue.put(token), loop)
             except Exception as e:
                 asyncio.run_coroutine_threadsafe(queue.put(e), loop)
@@ -158,6 +169,23 @@ async def ask_stream(request: AskRequest):
         yield {"data": json.dumps({"type": "done"})}
 
     return EventSourceResponse(event_generator())
+
+
+@app.post("/feedback")
+async def save_feedback(request: FeedbackRequest):
+    import json as _json
+    from datetime import datetime, timezone
+    entry = {
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "message_id": request.message_id,
+        "answer": request.answer[:500],
+        "feedback": request.feedback,
+    }
+    path = BASE_DIR / "data" / "feedback.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+    return {"ok": True}
 
 
 @app.post("/rebuild", response_model=RebuildResponse)

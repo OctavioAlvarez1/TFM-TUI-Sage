@@ -1,25 +1,11 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import SpaIcon from '@mui/icons-material/Spa';
 import StatusChip from '../common/StatusChip';
 import { useKbStatus } from '../../hooks/useKbStatus';
-
-const EXAMPLE_QUESTIONS = [
-  '¿Cuál es el destino más sostenible de España?',
-  '¿Qué destinos tienen congestión crítica en verano?',
-  '¿Dónde aplica Horizon penalización por redistribución?',
-  '¿Qué destinos de playa tienen bonificación de sostenibilidad?',
-  'Compara la sostenibilidad de Barcelona y Donostia.',
-];
-
-const HOW_IT_WORKS = [
-  'Tu pregunta se convierte en vector embedding',
-  'ChromaDB recupera los 5 docs más relevantes',
-  'Claude responde solo desde esos documentos',
-  'Se muestran fuentes y scores de relevancia',
-];
+import { useApp } from '../../context/AppContext';
+import { translations } from '../../i18n/translations';
 
 interface Props {
   onExampleClick: (question: string) => void;
@@ -27,6 +13,8 @@ interface Props {
 
 export default function StatusSidebar({ onExampleClick }: Props) {
   const { status, loading } = useKbStatus();
+  const { lang } = useApp();
+  const T = translations[lang];
 
   return (
     <Box
@@ -54,12 +42,9 @@ export default function StatusSidebar({ onExampleClick }: Props) {
       {/* Sage branding header */}
       <Box
         sx={{
-          px: 2.5,
-          pt: 2.5,
-          pb: 2,
+          px: 2.5, pt: 2.5, pb: 2,
           borderBottom: '1px solid rgba(255,255,255,0.15)',
-          position: 'relative',
-          zIndex: 1,
+          position: 'relative', zIndex: 1,
         }}
       >
         <Box display="flex" alignItems="center" gap={1.2} mb={1.5}>
@@ -88,13 +73,14 @@ export default function StatusSidebar({ onExampleClick }: Props) {
 
       {/* Content area */}
       <Box display="flex" flexDirection="column" gap={2.5} p={2.5} flex={1} sx={{ position: 'relative', zIndex: 1 }}>
+
         {/* Example questions */}
         <Box>
           <Typography variant="overline" sx={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
-            Preguntas de ejemplo
+            {T.ss_examples_title}
           </Typography>
           <Box mt={1} display="flex" flexDirection="column" gap={0.5}>
-            {EXAMPLE_QUESTIONS.map((q) => (
+            {T.ss_examples.map((q) => (
               <Button
                 key={q}
                 onClick={() => onExampleClick(q)}
@@ -124,7 +110,7 @@ export default function StatusSidebar({ onExampleClick }: Props) {
           </Box>
         </Box>
 
-        {/* How it works — visually distinct block */}
+        {/* How it works block */}
         <Box
           sx={{
             p: 2,
@@ -141,11 +127,11 @@ export default function StatusSidebar({ onExampleClick }: Props) {
           >
             <Box sx={{ width: 3, height: 14, borderRadius: '2px', bgcolor: '#4ADE80', flexShrink: 0 }} />
             <Typography variant="overline" sx={{ color: '#4ADE80', fontSize: '0.62rem', letterSpacing: 1.5, fontWeight: 700 }}>
-              Cómo funciona
+              {T.ss_how_title}
             </Typography>
           </Box>
           <Box mt={1.2} display="flex" flexDirection="column" gap={1.2}>
-            {HOW_IT_WORKS.map((step, i) => (
+            {T.ss_how_steps.map((step, i) => (
               <Box key={i} display="flex" gap={1} alignItems="flex-start">
                 <Box
                   sx={{

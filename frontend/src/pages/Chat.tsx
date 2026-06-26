@@ -7,10 +7,10 @@ import HowItWorksSection from '../components/sections/HowItWorksSection';
 import { useSageStream } from '../hooks/useSageStream';
 
 export default function Chat() {
-  const { messages, isLoading, sendMessage } = useSageStream();
+  const { messages, isLoading, sendMessage, rateFeedback } = useSageStream();
 
   const handleSearch = (q: string) => {
-    document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('chat-widget')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     sendMessage(q);
   };
 
@@ -20,7 +20,7 @@ export default function Chat() {
       <main>
         <HeroSection onSearch={handleSearch} />
         <StatsBar />
-        <ChatSection messages={messages} isLoading={isLoading} sendMessage={sendMessage} />
+        <ChatSection messages={messages} isLoading={isLoading} sendMessage={sendMessage} onFeedback={rateFeedback} />
         <HowItWorksSection />
       </main>
       <Footer />

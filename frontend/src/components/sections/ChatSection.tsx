@@ -1,20 +1,29 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SpaIcon from '@mui/icons-material/Spa';
+import { useTheme } from '@mui/material/styles';
 import StatusSidebar from '../chat/StatusSidebar';
 import ChatWindow from '../chat/ChatWindow';
 import ChatInput from '../chat/ChatInput';
-import type { ChatMessage } from '../../types/chat';
+import { useApp } from '../../context/AppContext';
+import { translations } from '../../i18n/translations';
+import type { ChatMessage, FeedbackType } from '../../types/chat';
 
 interface ChatSectionProps {
   messages: ChatMessage[];
   isLoading: boolean;
   sendMessage: (q: string) => void;
+  onFeedback: (messageId: string, feedback: FeedbackType) => void;
 }
 
 const CHAT_HEIGHT = 580;
 
-export default function ChatSection({ messages, isLoading, sendMessage }: ChatSectionProps) {
+export default function ChatSection({ messages, isLoading, sendMessage, onFeedback }: ChatSectionProps) {
+  const { lang } = useApp();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const T = translations[lang];
+
   return (
     <Box
       component="section"
@@ -24,28 +33,32 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
         px: { xs: 2, md: 4 },
         position: 'relative',
         overflow: 'hidden',
-        // Sevilla Plaza de España como fondo con efecto desvaneciente
         backgroundImage: 'url(/stat-datos.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
-        // Fade lineal en bordes superior e inferior
         '&::before': {
           content: '""',
           position: 'absolute',
           inset: 0,
-          background: `
-            linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0) 80%, rgba(240,253,244,0.70) 100%),
-            linear-gradient(90deg,  rgba(255,255,255,0.60) 0%, rgba(255,255,255,0) 16%, rgba(255,255,255,0) 84%, rgba(255,255,255,0.60) 100%)
-          `,
+          background: isDark
+            ? `
+              linear-gradient(180deg, rgba(13,17,23,0.80) 0%, rgba(13,17,23,0) 20%, rgba(13,17,23,0) 80%, rgba(13,17,23,0.80) 100%),
+              linear-gradient(90deg,  rgba(13,17,23,0.70) 0%, rgba(13,17,23,0) 16%, rgba(13,17,23,0) 84%, rgba(13,17,23,0.70) 100%)
+            `
+            : `
+              linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0) 80%, rgba(240,253,244,0.70) 100%),
+              linear-gradient(90deg,  rgba(255,255,255,0.60) 0%, rgba(255,255,255,0) 16%, rgba(255,255,255,0) 84%, rgba(255,255,255,0.60) 100%)
+            `,
           pointerEvents: 'none',
           zIndex: 0,
         },
-        // Vignette radial — desvanece la foto hacia los bordes dejando el centro visible
         '&::after': {
           content: '""',
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse 60% 65% at 50% 58%, transparent 0%, rgba(255,255,255,0.95) 100%)',
+          background: isDark
+            ? 'radial-gradient(ellipse 60% 65% at 50% 58%, transparent 0%, rgba(13,17,23,0.92) 100%)'
+            : 'radial-gradient(ellipse 60% 65% at 50% 58%, transparent 0%, rgba(255,255,255,0.95) 100%)',
           pointerEvents: 'none',
           zIndex: 0,
         },
@@ -55,36 +68,36 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
         {/* Section heading */}
         <Box textAlign="center" mb={6}>
           <Typography variant="overline" sx={{ color: '#16A34A', letterSpacing: 3, fontSize: '0.72rem', fontWeight: 700 }}>
-            Pregunta a Sage
+            {T.chat_overline}
           </Typography>
-          <Typography variant="h4" fontWeight={800} mt={0.5} sx={{ color: '#111827' }}>
-            Tu Asesor de Destinos con IA
+          <Typography variant="h4" fontWeight={800} mt={0.5} sx={{ color: theme.palette.text.primary }}>
+            {T.chat_title}
           </Typography>
-          <Typography variant="body1" sx={{ color: '#6B7280', mt: 1, maxWidth: 460, mx: 'auto' }}>
-            Respuestas fundamentadas en datos reales de sostenibilidad, congestión y
-            el motor de recomendación Horizon.
+          <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mt: 1, maxWidth: 460, mx: 'auto' }}>
+            {T.chat_subtitle}
           </Typography>
         </Box>
 
         {/* Chat widget */}
         <Box
+          id="chat-widget"
           sx={{
             display: 'flex',
             flexDirection: 'column',
             borderRadius: '24px',
             overflow: 'hidden',
             border: '2px solid #2D6A4F',
-            background: '#FFFFFF',
+            background: theme.palette.background.paper,
             boxShadow: `
-              0 0 0 8px rgba(255,255,255,1),
+              0 0 0 8px ${isDark ? 'rgba(13,17,23,1)' : 'rgba(255,255,255,1)'},
               0 0 0 10px #2D6A4F,
-              0 0 0 14px rgba(255,255,255,0.60),
+              0 0 0 14px ${isDark ? 'rgba(13,17,23,0.60)' : 'rgba(255,255,255,0.60)'},
               0 40px 100px rgba(0,0,0,0.50),
               0 10px 30px rgba(0,0,0,0.30)
             `,
           }}
         >
-          {/* Chrome top bar — dark forest green */}
+          {/* Chrome top bar */}
           <Box
             sx={{
               display: 'flex',
@@ -116,7 +129,7 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
                 <SpaIcon sx={{ color: '#fff', fontSize: 12 }} />
               </Box>
               <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)', letterSpacing: 0.5 }}>
-                Sage · Asesor de Destinos
+                {T.chat_bar_title}
               </Typography>
             </Box>
 
@@ -127,7 +140,7 @@ export default function ChatSection({ messages, isLoading, sendMessage }: ChatSe
           <Box sx={{ display: 'flex', height: CHAT_HEIGHT }}>
             <StatusSidebar onExampleClick={sendMessage} />
             <Box display="flex" flexDirection="column" flex={1} overflow="hidden">
-              <ChatWindow messages={messages} />
+              <ChatWindow messages={messages} onFeedback={onFeedback} />
               <ChatInput onSend={sendMessage} disabled={isLoading} />
             </Box>
           </Box>

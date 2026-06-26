@@ -5,23 +5,39 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import DescriptionIcon from '@mui/icons-material/Description';
 import type { SvgIconComponent } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
+import { useApp } from '../../context/AppContext';
+import { translations } from '../../i18n/translations';
 
-const STATS: {
-  value: string; label: string; sub: string;
-  Icon: SvgIconComponent; color: string; img: string;
-}[] = [
-  { value: '20',   label: 'Destinos',        sub: 'Playas · Ciudades · Naturaleza · Mixto', Icon: LocalFloristIcon, color: '#4ADE80', img: '/stat-destinos.jpg'      },
-  { value: '85%',  label: 'Concentración',   sub: 'en el 10% del territorio',               Icon: BarChartIcon,     color: '#FB923C', img: '/stat-concentracion.jpg' },
-  { value: '240+', label: 'Datos mensuales', sub: 'INE · 13 provincias',                    Icon: TrendingUpIcon,   color: '#A3E635', img: '/stat-datos.jpg'         },
-  { value: '21',   label: 'Documentos RAG',  sub: 'Contexto + fuentes',                     Icon: DescriptionIcon,  color: '#34D399', img: '/stat-documentos.jpg'    },
+const STAT_META: { value: string; Icon: SvgIconComponent; color: string; img: string }[] = [
+  { value: '20',   Icon: LocalFloristIcon, color: '#4ADE80', img: '/stat-destinos.jpg'      },
+  { value: '85%',  Icon: BarChartIcon,     color: '#FB923C', img: '/stat-concentracion.jpg' },
+  { value: '240+', Icon: TrendingUpIcon,   color: '#A3E635', img: '/stat-datos.jpg'         },
+  { value: '21',   Icon: DescriptionIcon,  color: '#34D399', img: '/stat-documentos.jpg'    },
 ];
 
 export default function StatsBar() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const { lang } = useApp();
+  const T = translations[lang];
+
+  const LABELS = [
+    { label: T.stat_destinos_label,       sub: T.stat_destinos_sub },
+    { label: T.stat_concentracion_label,  sub: T.stat_concentracion_sub },
+    { label: T.stat_datos_label,          sub: T.stat_datos_sub },
+    { label: T.stat_documentos_label,     sub: T.stat_documentos_sub },
+  ];
+
+  const STATS = STAT_META.map((m, i) => ({ ...m, ...LABELS[i] }));
+
   return (
     <Box
       sx={{
-        background: 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)',
-        borderBottom: '1px solid #F1F5F9',
+        background: isDark
+          ? theme.palette.background.default
+          : 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)',
+        borderBottom: `1px solid ${isDark ? theme.palette.divider : '#F1F5F9'}`,
         py: { xs: 4, md: 5 },
         px: { xs: 2, md: 4 },
       }}
@@ -52,7 +68,6 @@ export default function StatsBar() {
                 transform: 'translateY(-4px)',
                 boxShadow: '0 12px 32px rgba(0,0,0,0.28)',
               },
-              // Color accent line at bottom
               '&::after': {
                 content: '""',
                 position: 'absolute',
@@ -73,7 +88,7 @@ export default function StatsBar() {
               zIndex: 0,
             }} />
 
-            {/* Dark gradient overlay — top-to-bottom + left-to-right combined */}
+            {/* Dark gradient overlay */}
             <Box aria-hidden sx={{
               position: 'absolute',
               inset: 0,
@@ -91,8 +106,7 @@ export default function StatsBar() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 36,
-                height: 36,
+                width: 36, height: 36,
                 borderRadius: '10px',
                 bgcolor: 'rgba(255,255,255,0.18)',
                 backdropFilter: 'blur(4px)',

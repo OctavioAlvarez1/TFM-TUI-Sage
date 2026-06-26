@@ -1,4 +1,4 @@
-import type { StatusResponse, SseEvent } from '../types/chat';
+import type { StatusResponse, SseEvent, ConversationTurn } from '../types/chat';
 
 const API_BASE = '/api';
 
@@ -10,12 +10,14 @@ export async function fetchStatus(): Promise<StatusResponse> {
 
 export async function* streamAsk(
   question: string,
+  history: ConversationTurn[] = [],
+  lang = 'es',
   nResults = 5,
 ): AsyncGenerator<SseEvent> {
   const res = await fetch(`${API_BASE}/ask/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, n_results: nResults }),
+    body: JSON.stringify({ question, history, lang, n_results: nResults }),
   });
 
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);

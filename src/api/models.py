@@ -2,9 +2,16 @@
 from pydantic import BaseModel, Field
 
 
+class ConversationMessage(BaseModel):
+    role: str  # "user" | "assistant"
+    content: str
+
+
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=2000)
     n_results: int = Field(default=5, ge=1, le=10)
+    history: list[ConversationMessage] = Field(default_factory=list)
+    lang: str = Field(default='es')  # 'es' | 'en'
 
 
 class SourceDocument(BaseModel):
@@ -30,3 +37,9 @@ class StatusResponse(BaseModel):
 class RebuildResponse(BaseModel):
     success: bool
     message: str
+
+
+class FeedbackRequest(BaseModel):
+    message_id: str
+    answer: str
+    feedback: str  # "up" | "down"

@@ -2,18 +2,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import SpaIcon from '@mui/icons-material/Spa';
+import { useApp } from '../../context/AppContext';
+import { translations } from '../../i18n/translations';
 
-const SUITE = [
-  { name: 'Sentinel',   reto: 1, role: 'Monitor de Sentimiento', color: '#F97316' },
-  { name: 'Horizon',    reto: 2, role: 'Recomendador IA',        color: '#3B82F6' },
-  { name: 'Atlas',      reto: 3, role: 'Dashboard Geoespacial',  color: '#A855F7' },
-  { name: 'Pathfinder', reto: 4, role: 'Movilidad Sostenible',   color: '#06B6D4' },
-  { name: 'Sage',       reto: 5, role: 'Asesor IA RAG',          color: '#22C55E', active: true },
-];
-
-const STACK = ['GPT-4o mini', 'ChromaDB', 'sentence-transformers', 'FastAPI', 'React 19', 'MUI v6'];
+const STACK = ['Claude Haiku', 'ChromaDB', 'sentence-transformers', 'FastAPI', 'React 19', 'MUI v6'];
 
 export default function Footer() {
+  const { lang } = useApp();
+  const T = translations[lang];
+
   return (
     <Box
       component="footer"
@@ -22,7 +19,6 @@ export default function Footer() {
         background: 'linear-gradient(180deg, #071A0E 0%, #030D07 100%)',
         position: 'relative',
         overflow: 'hidden',
-        // Top green accent line
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -30,7 +26,6 @@ export default function Footer() {
           height: '1px',
           background: 'linear-gradient(90deg, transparent, rgba(74,222,128,0.5) 30%, rgba(74,222,128,0.5) 70%, transparent)',
         },
-        // Radial glow bottom-right
         '&::after': {
           content: '""',
           position: 'absolute',
@@ -70,12 +65,11 @@ export default function Footer() {
               </Box>
             </Box>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.40)', lineHeight: 1.7, fontSize: '0.82rem' }}>
-              Asesor de destinos turísticos impulsado por RAG. Respuestas
-              fundamentadas en datos reales del INE, FRONTUR y Horizon.
+              {T.footer_tagline}
             </Typography>
             <Box mt={2.5}>
               <Typography sx={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.25)', fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', mb: 1 }}>
-                Stack tecnológico
+                {T.footer_stack_label}
               </Typography>
               <Box display="flex" flexWrap="wrap" gap={0.75}>
                 {STACK.map((t) => (
@@ -100,10 +94,10 @@ export default function Footer() {
           {/* Right — Suite */}
           <Box flex="1 1 300px">
             <Typography sx={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.30)', fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', mb: 2 }}>
-              Suite TUI Care Foundation · Future Shapers Spain
+              {T.footer_suite_label}
             </Typography>
             <Box display="flex" flexDirection="column" gap={1}>
-              {SUITE.map((p) => (
+              {T.footer_suite.map((p) => (
                 <Box
                   key={p.name}
                   sx={{
@@ -145,7 +139,7 @@ export default function Footer() {
                   {p.active && (
                     <Box sx={{ px: 1, py: 0.2, borderRadius: '20px', bgcolor: `${p.color}22`, border: `1px solid ${p.color}44` }}>
                       <Typography sx={{ fontSize: '0.6rem', color: p.color, fontWeight: 700, letterSpacing: 0.5 }}>
-                        ACTIVO
+                        {T.footer_active}
                       </Typography>
                     </Box>
                   )}
@@ -160,7 +154,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={1} alignItems="center">
           <Typography sx={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)' }}>
-            UCM TFM 2026 · TUI Care Foundation Future Shapers Spain
+            {T.footer_copyright}
           </Typography>
           <Box display="flex" alignItems="center" gap={0.75}>
             <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#4ADE80', boxShadow: '0 0 6px #4ADE80' }} />
