@@ -1,0 +1,10 @@
+data/chroma/
+data/feedback.jsonl
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git/
+frontend/
+*.md
+.gitignore

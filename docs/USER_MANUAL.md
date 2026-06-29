@@ -274,12 +274,39 @@ Rebuild takes approximately 30 seconds.
 
 ---
 
-## 11. Legacy Streamlit Interface
+## 11. Docker Deployment
 
-A simpler Streamlit version of Sage is available as a fallback. It does not support streaming, dark mode, or bilingual sources, but is useful for quick testing:
+Sage can run entirely inside Docker containers — no local Python or Node.js installation required.
+
+### Prerequisites
+
+- Docker Desktop installed and running
+- The `TUI-Smart-Destination-Recommender` repository on the same Desktop (for CSV data)
+
+### Setup
 
 ```bash
-streamlit run app.py --server.port 8504
+# 1. Create your environment file
+copy .env.example .env
+# Open .env and set: OPENAI_API_KEY=sk-...
+
+# 2. Build and start
+docker compose up --build
 ```
 
-Opens at `http://localhost:8504`.
+| Container | Port | URL |
+|---|---|---|
+| sage-backend | 8504 | http://localhost:8504 |
+| sage-frontend | 5174 | http://localhost:5174 |
+
+On first run, the backend downloads the embedding model (~80 MB) and builds the ChromaDB knowledge base inside the `sage_chroma` Docker volume. Subsequent starts reuse the cached KB.
+
+### Stop and clean up
+
+```bash
+# Stop containers
+docker compose down
+
+# Stop and remove the ChromaDB volume (forces KB rebuild on next start)
+docker compose down -v
+```

@@ -143,7 +143,7 @@ Final Score = 0.45 × Preference + 0.25 × Sustainability + 0.15 × Popularity +
 | ES/EN bilingual UI | ✅ Complete | All strings translated |
 | Bilingual knowledge base | ✅ Complete | Spanish primary, English in metadata |
 | Feedback logging | ✅ Complete | feedback.jsonl |
-| Legacy Streamlit fallback | ✅ Complete | app.py (reference only) |
+| Docker deployment | ✅ Complete | Dockerfile + docker-compose.yml, nginx reverse proxy |
 
 ---
 

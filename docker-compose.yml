@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: .
+    container_name: sage-backend
+    ports:
+      - "8504:8504"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ../TUI-Smart-Destination-Recommender/data/raw:/app/data/raw:ro
+      - sage_chroma:/app/data/chroma
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: sage-frontend
+    ports:
+      - "5174:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  sage_chroma:

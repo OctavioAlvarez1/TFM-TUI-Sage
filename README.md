@@ -70,11 +70,21 @@ npm run dev
 # → http://localhost:5174
 ```
 
-### Legacy Streamlit (optional)
+### Option B — Docker
 
 ```bash
-streamlit run app.py --server.port 8504
+# 1. Copy .env.example and add your API key
+cp .env.example .env
+# edit .env: OPENAI_API_KEY=sk-...
+
+# 2. Build and start both containers
+docker compose up --build
+
+# Backend → http://localhost:8504
+# Frontend → http://localhost:5174
 ```
+
+On first run the backend downloads the embedding model (~80 MB) and builds the ChromaDB knowledge base. ChromaDB data is persisted in the `sage_chroma` Docker volume.
 
 ---
 

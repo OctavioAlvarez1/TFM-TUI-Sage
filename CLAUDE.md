@@ -28,11 +28,12 @@ python -m uvicorn src.api.app:app --reload --port 8504
 # Terminal 2 — React frontend (port 5174)
 cd frontend && npm install && npm run dev
 
-# Legacy Streamlit fallback (still works, kept for reference)
-streamlit run app.py --server.port 8504
-
 # Rebuild knowledge base after CSV changes
 curl -X POST http://localhost:8504/rebuild
+
+# Docker (alternative to local dev)
+cp .env.example .env  # then add OPENAI_API_KEY
+docker compose up --build
 ```
 
 ## Architecture
@@ -140,6 +141,7 @@ Global `AppContext` provides `lang`, `toggleLang`, `mode`, `toggleMode`. All UI 
 - Cite destination names precisely
 - Reference Horizon's business rules when relevant
 - Respond in the correct language for the `lang` parameter
+- Always close with "Muchas gracias por confiar en TUI Care Foundation. Sigo aquí para cualquier otra pregunta." (ES) / "Thank you for trusting TUI Care Foundation. I'm here for any other questions." (EN)
 
 ### Knowledge Base Rebuild
 Call `POST /rebuild` or `build_knowledge_base(force_rebuild=True)` to regenerate.

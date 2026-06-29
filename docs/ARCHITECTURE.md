@@ -307,9 +307,22 @@ Browser               FastAPI              ChromaDB             OpenAI API
 
 ## Deployment Notes
 
-- Designed for local development and academic demonstration
+### Local Development
+
 - No database — ChromaDB is file-based (`data/chroma/`)
 - CORS restricted to `localhost:5174` — update `allow_origins` in `app.py` for production
 - `OPENAI_API_KEY` must be set as an environment variable — never hardcoded
 - The embedding model is downloaded once by ChromaDB on first run — requires internet access
 - `feedback.jsonl` and `data/chroma/` are gitignored — rebuilt and accumulated per-user
+
+### Docker
+
+```
+Dockerfile              ← Python 3.11-slim backend image
+frontend/Dockerfile     ← Node 20 build → nginx:alpine
+frontend/nginx.conf     ← Proxies /api/ → http://backend:8504/
+docker-compose.yml      ← Orchestrates both containers
+.env.example            ← Copy to .env, set OPENAI_API_KEY
+```
+
+The `docker-compose.yml` mounts `../TUI-Smart-Destination-Recommender/data/raw` as a read-only volume for CSV data, and creates a named volume `sage_chroma` for ChromaDB persistence. The frontend nginx container proxies `/api/` requests to the backend, replicating the Vite dev proxy behaviour.

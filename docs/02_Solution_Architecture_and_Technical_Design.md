@@ -163,6 +163,7 @@ The architecture follows the TUI Care Foundation's 5-layer framework:
 - Bilingual knowledge base and interface (ES/EN)
 - Dark/light mode
 - Thumbs up/down feedback logging
+- Docker containerization (backend + nginx-served frontend via `docker compose up --build`)
 
 ## Phase 2 — Production Enhancement
 

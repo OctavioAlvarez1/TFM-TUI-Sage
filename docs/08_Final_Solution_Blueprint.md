@@ -103,7 +103,7 @@ MUI v6 introduces stable `sx` prop cascading, improved dark mode tokens, and rem
 | ES/EN i18n | ✅ Complete | All UI strings, flag image toggle |
 | Bilingual sources | ✅ Complete | Spanish primary, English in metadata |
 | Feedback logging | ✅ Complete | feedback.jsonl, thumbs up/down per message |
-| Legacy Streamlit | ✅ Complete | app.py (fallback, kept for reference) |
+| Docker deployment | ✅ Complete | Dockerfile + frontend/Dockerfile + docker-compose.yml |
 
 ---
 
@@ -139,7 +139,7 @@ MUI v6 introduces stable `sx` prop cascading, improved dark mode tokens, and rem
 |---|---|
 | `data/feedback.jsonl` | Accumulates locally, gitignored |
 | `data/chroma/` | ChromaDB storage, gitignored, rebuilt per user |
-| `app.py` | Legacy Streamlit fallback, kept for reference |
+| `.env.example` | API key template — copy to `.env` before Docker or local run |
 
 ---
 
